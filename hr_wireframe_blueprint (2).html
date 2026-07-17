@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HR Platform Proof of Concept</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      color: #8C8A84;
+    }
+  }
+  @page :first { @bottom-center { content: ""; } }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    color: #2B2A26;
+    font-size: 9.3pt;
+    line-height: 1.42;
+  }
+  .cover {
+    padding-top: 40mm;
+  }
+  .cover .label {
+    font-size: 9pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B6963;
+    margin-bottom: 14pt;
+  }
+  .cover h1 {
+    font-size: 25pt;
+    line-height: 1.25;
+    margin: 0 0 12pt 0;
+    font-weight: 700;
+    color: #1E1D1A;
+  }
+  .cover .sub {
+    font-size: 12pt;
+    color: #55534D;
+    max-width: 130mm;
+    margin-bottom: 26pt;
+    line-height: 1.55;
+  }
+  .cover-meta {
+    border-top: 0.6pt solid #D8D6D0;
+    padding-top: 10pt;
+    margin-top: 40pt;
+    font-size: 8.6pt;
+    color: #6B6963;
+    display: table;
+    width: 100%;
+  }
+  .cover-meta .row { display: table-row; }
+  .cover-meta .k { display: table-cell; padding: 2.5pt 12pt 2.5pt 0; color: #8C8A84; width: 32%; }
+  .cover-meta .v { display: table-cell; padding: 2.5pt 0; color: #2B2A26; }
+
+  .page-break { page-break-before: always; }
+
+  table, .diagram, .note, .cols2, .cover { page-break-inside: avoid; }
+  h2, h3 { page-break-after: avoid; }
+  tr { page-break-inside: avoid; }
+
+  h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #1E1D1A;
+    margin: 0 0 3pt 0;
+    padding-top: 3pt;
+    border-bottom: 1pt solid #DEDDD8;
+    padding-bottom: 4pt;
+  }
+  h2 .n { color: #8C8A84; font-weight: 600; margin-right: 6pt; }
+  h3 {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #1E1D1A;
+    margin: 12pt 0 4pt 0;
+  }
+  p { margin: 0 0 7pt 0; text-align: left; color: #3A3934; }
+  .section { margin-bottom: 15pt; }
+  .lede { color: #55534D; font-size: 9.8pt; }
+
+  ul, ol { margin: 4pt 0 8pt 0; padding-left: 15pt; }
+  li { margin-bottom: 3pt; color: #3A3934; }
+
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt 0; font-size: 8.6pt; }
+  thead th {
+    text-align: left; font-size: 7.7pt; text-transform: uppercase; letter-spacing: 0.03em;
+    color: #6B6963; font-weight: 700; padding: 4.5pt 7pt; border-bottom: 1pt solid #C9C7C1;
+    background: #F7F6F3;
+  }
+  tbody td { padding: 5pt 7pt; border-bottom: 0.5pt solid #E9E9E5; vertical-align: top; color: #3A3934; }
+  tbody tr:last-child td { border-bottom: 0.5pt solid #C9C7C1; }
+
+  .note {
+    border-left: 2pt solid #B9B7B0;
+    background: #F7F6F3;
+    padding: 7pt 10pt;
+    margin: 8pt 0;
+    font-size: 8.8pt;
+    color: #4A4944;
+  }
+  .note strong { color: #2B2A26; }
+
+  .cols2 { display: table; width: 100%; }
+  .cols2 .col { display: table-cell; width: 50%; vertical-align: top; padding-right: 10pt; }
+  .cols2 .col:last-child { padding-right: 0; padding-left: 10pt; }
+
+  .diagram { text-align: center; margin: 8pt 0 4pt 0; }
+  .diagram svg { max-width: 100%; }
+  .cap { text-align: center; font-size: 7.8pt; color: #8C8A84; margin-top: 3pt; margin-bottom: 10pt; font-style: italic; }
+
+  code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.3pt; color: #6A4E2E; }
+
+  .footer-strip {
+    margin-top: 20pt; padding-top: 8pt; border-top: 0.6pt solid #DEDDD8;
+    font-size: 7.6pt; color: #9A988F;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="label">Product Requirements and Wireframe Specification</div>
+  <h1>HR Platform: Module Analysis and Figma Wireframe Blueprint</h1>
+  <p class="sub">A complete module tree, role and access model, and screen-by-screen wireframe specification for the HR platform, built from the client's current Darwinbox usage, its specific gaps, and a comparative analysis against Darwinbox and Zoho People Plus.</p>
+
+  <div class="cover-meta">
+    <div class="row"><div class="k">Document type</div><div class="v">Product requirements and wireframe blueprint, for direct use in Figma</div></div>
+    <div class="row"><div class="k">Classification</div><div class="v">Internal, prepared for design and engineering handoff</div></div>
+    <div class="row"><div class="k">Basis</div><div class="v">Client requirements meeting on current Darwinbox usage, plus independent analysis of Darwinbox and Zoho People Plus</div></div>
+    <div class="row"><div class="k">Target shape</div><div class="v">A configuration-heavy, internally administered HR platform, closer to Zoho People Plus in module breadth than to Darwinbox's enterprise rigidity</div></div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="section">
+  <h2><span class="n">1.</span>Purpose and Method</h2>
+  <p>This document turns a client requirements meeting into a buildable specification. The client described their current Darwinbox usage in enough detail to reveal not just which modules they use, but specifically where the tool breaks down for them: offer letters that can't be generated from interview data, a help desk whose email intake misroutes tickets, and an attendance regularization window that needs a hard cutoff. Those specifics are treated as requirements, not incidental complaints.</p>
+  <p>Alongside the client's notes, we independently analyzed two reference products: Darwinbox, the platform the client currently runs, and Zoho People Plus, a differently structured suite that bundles a comparable set of HR functions from a more modular, configuration-first starting point. The comparison in Section 2 is there to make one thing explicit: we are not rebuilding Darwinbox's screens from memory, we are building the modules the client actually uses, shaped by where Darwinbox causes friction and where Zoho People Plus's structure handles the same job more directly.</p>
+  <p>The rest of this document is the blueprint a designer needs to start wireframing in Figma without re-asking these questions: the full module tree (Section 5), a screen-by-screen specification for every module (Sections 6 through 20), the workflows that cross module boundaries (Section 21), and how to organize the actual Figma file (Section 22).</p>
+</div>
+
+<div class="section">
+  <h2><span class="n">2.</span>Reference Analysis: Darwinbox and Zoho People Plus</h2>
+  <p>Darwinbox is an enterprise-grade, end-to-end HCM platform: Core HR, recruitment and onboarding, payroll, leave and attendance, performance, and analytics, all on one data model, built for large enterprises with complex, multi-entity structures. Independent reviews consistently describe it as comprehensive but configuration-heavy: workflows are powerful but rigid once set up, and changes to process or reporting often need admin or vendor support rather than being something an HR user configures directly. That rigidity is exactly what the client's own account of Darwinbox describes: an offer letter process that can't connect directly to interview data, and a help desk whose escalation and routing logic doesn't hold up when tickets arrive by email.</p>
+  <p>Zoho People Plus takes a different shape: a suite of separately named but tightly integrated applications, Zoho People for core HR and time and attendance, Zoho Recruit for talent acquisition, Zoho Expense, Zoho Payroll, and Zoho Connect for engagement, unified under one login and one employee record. Two things about it are directly relevant here. First, its help desk module (renamed from "Cases" to "HR Help Desk") is built specifically for internal HR queries, with a category structure and a manager-facing escalation path, the same shape the client is asking for, rather than a generic IT ticketing tool repurposed for HR. Second, its configuration model leans no-code: category admins, module admins, and workflow rules are things an HR administrator sets up directly, not things that require a support ticket to change.</p>
+  <table>
+    <thead><tr><th>What we are taking from each</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Darwinbox's end-to-end scope: recruitment through exit on one employee record</td><td>This is the shape the client already operates in and expects; nothing about their current process needs to be reinvented, only fixed where it breaks.</td></tr>
+      <tr><td>Zoho People Plus's category-based, no-code HR help desk structure</td><td>It is the closest existing match to what the client described: an HR-only service desk with configurable categories, ownership and escalation, not a generic ticketing tool.</td></tr>
+      <tr><td>Zoho People Plus's admin-configurable workflow and policy model</td><td>The client's complaints about Darwinbox are largely configuration rigidity; a platform where HR administrators can adjust policies and escalation rules directly avoids repeating that problem.</td></tr>
+      <tr><td>Neither product's exact screen layout</td><td>We are building the client's process, informed by both products' structure, not cloning either one's interface.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 3 -->
+<div class="section">
+  <h2><span class="n">3.</span>Client Requirements Summary</h2>
+  <p>The client's notes are organized here by module, with the specific difficulty they described called out under each one. These are the requirements this platform has to satisfy; everything else in this document is the structure built to satisfy them.</p>
+  <table>
+    <thead><tr><th>Area</th><th>What they described</th><th>The specific difficulty</th></tr></thead>
+    <tbody>
+      <tr><td>Login and access</td><td>Separate access levels for admin, super admin, and employees; a career page with its own candidate registry.</td><td>None stated; a standard role hierarchy plus a public-facing candidate registry.</td></tr>
+      <tr><td>Interview scheduling</td><td>Scheduled and run through Microsoft Teams integration.</td><td>None stated; the integration itself is the requirement.</td></tr>
+      <tr><td>Recruitment to employee conversion</td><td>Offer letters and new employee records should flow directly from the interview and offer process.</td><td>Cannot generate offer letters directly in Darwinbox; the current process requires manually re-entering new employee details, effectively an Excel import, rather than a direct interview-to-employee pipeline.</td></tr>
+      <tr><td>HR help desk</td><td>An HR-only service desk (not IT support), scoped to modules like leave, attendance and related HR queries.</td><td>Escalation is supposed to auto-assign to the next person in line if the assigned owner doesn't respond within SLA, configured per request category and an escalation module, but tickets raised by email currently get assigned inconsistently, to different people, rather than following that same logic.</td></tr>
+      <tr><td>Performance, expenses, org view</td><td>Not currently used, but planned: performance for quarterly review and KRA goals, expenses, and an organization-wide view.</td><td>None stated; these are future scope, not proof-of-concept scope, but the framework needs to carry them without a redesign later.</td></tr>
+      <tr><td>Employee profile</td><td>Employee details plus a live indicator of whether they're currently in the office, out, or otherwise, based on attendance status.</td><td>None stated.</td></tr>
+      <tr><td>Attendance</td><td>Punch in and out, a reminder if the employee is late for check-in, a minimum six hours present rule, and a regularization request process.</td><td>Regularization has to be blocked after five days from the attendance date; attendance and leave policies also need to vary by manager and by specific individual, not just apply organization-wide.</td></tr>
+      <tr><td>Admin access</td><td>A proxy login: an admin can log in and view the system exactly as a given employee would see it.</td><td>None stated.</td></tr>
+      <tr><td>HR documents</td><td>Templated documents, bona fide letters, experience letters and similar, generated for a user, then retained; generated documents can be emailed, pinned to the employee's profile, or downloaded locally.</td><td>A QR code on each document needs to let anyone validate whether it is authentic; the same interview-to-employee conversion gap applies here, they currently can't convert a requirement or interview record directly into an employee without manual re-entry or an Excel import.</td></tr>
+      <tr><td>Policies</td><td>Attendance policies (and leave policies) need to be configurable per manager and per specific employee, not only at the organization level.</td><td>None stated beyond the layered configuration need.</td></tr>
+      <tr><td>Reports builder</td><td>A flexible report builder for attendance and other services, plus audits like employee details, matching whatever fields exist in their current Darwinbox setup.</td><td>None stated; the requirement is flexibility to build the report they need rather than a fixed set of canned reports.</td></tr>
+      <tr><td>Employee lifecycle</td><td>Employees are categorized as active, inactive, or pending, active and currently working, inactive because they've left, and pending because they were imported but haven't been activated yet. Left employees get deactivated, and there's a rejoin flow for employees who return.</td><td>None stated beyond needing all three states plus rejoin handled explicitly.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 4 -->
+<div class="section">
+  <h2><span class="n">4.</span>Role and Access Model</h2>
+  <p>Four roles cover everything described in the client's notes. Every screen specification from Section 6 onward states which of these roles can see it.</p>
+  <table>
+    <thead><tr><th>Role</th><th>Scope</th></tr></thead>
+    <tbody>
+      <tr><td>Super Admin</td><td>Full platform configuration: role assignment, module enablement, escalation matrix, policy library, integrations. Typically one or two people per client organization.</td></tr>
+      <tr><td>Admin (HR Admin)</td><td>Day-to-day HR operations: employee records, recruitment, help desk ownership and category configuration, document generation, reports. Does not configure platform-wide settings reserved for Super Admin.</td></tr>
+      <tr><td>Manager</td><td>A subset of Admin scoped to their own reporting line: approves their team's leave and regularization requests, views their team's profiles and documents, can raise help desk tickets on a report's behalf.</td></tr>
+      <tr><td>Employee</td><td>Self-service only: own profile, attendance, leave, help desk tickets, and document requests.</td></tr>
+    </tbody>
+  </table>
+  <p>A fifth, non-authenticated actor, the <strong>Candidate</strong>, uses only the public career page and candidate registry (Section 7) and never sees the internal platform.</p>
+  <div class="note"><strong>Proxy login.</strong> Admin and Super Admin can select any employee and view the platform exactly as that employee would see it, same navigation, same data scope, same permissions, with a persistent banner identifying whose view is being shown and a one-click exit back to the admin's own session. This is a view-only impersonation for support and troubleshooting, not a separate role; it borrows the selected employee's exact permission set for the duration of the session.</div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="section">
+  <h2><span class="n">5.</span>Full Module Tree</h2>
+  <p>This is the complete site map: every module, and every screen inside it, in the order they should become pages in the Figma file. Numbering here matches the screen specifications in Sections 6 through 20.</p>
+  <table>
+    <thead><tr><th>#</th><th>Module</th><th>Screens</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Authentication and access</td><td>Login · Forgot/reset password · Proxy login switcher</td></tr>
+      <tr><td>2</td><td>Career page and candidate registry</td><td>Job listings · Job detail · Candidate registration/login · Application form · Application status tracker</td></tr>
+      <tr><td>3</td><td>Recruitment and interview scheduling</td><td>Requisition creation · Candidate pipeline · Interview scheduling (Teams) · Interview feedback form · Offer generation · Offer approval</td></tr>
+      <tr><td>4</td><td>Requisition-to-employee conversion</td><td>Conversion review screen · Auto-provisioned employee record · Onboarding checklist</td></tr>
+      <tr><td>5</td><td>Employee profile and org view</td><td>My profile · Employee directory · Org chart · Presence status</td></tr>
+      <tr><td>6</td><td>Attendance</td><td>Punch in/out · Attendance calendar · Regularization request · Regularization approval · Attendance policy configuration</td></tr>
+      <tr><td>7</td><td>Leave</td><td>Apply leave · Leave balance · Leave approval · Leave policy configuration</td></tr>
+      <tr><td>8</td><td>HR help desk</td><td>Raise ticket · My tickets · Ticket queue (owner view) · Category, SLA and escalation configuration · Email intake configuration</td></tr>
+      <tr><td>9</td><td>HR documents</td><td>Template library · Generate document · Issued documents log · QR verification page (public)</td></tr>
+      <tr><td>10</td><td>Performance (planned, Phase 2)</td><td>Goals and KRA · Quarterly review cycle</td></tr>
+      <tr><td>11</td><td>Expenses (planned, Phase 2)</td><td>Claim submission · Claim approval</td></tr>
+      <tr><td>12</td><td>Policies engine</td><td>Policy library · Assignment rules (organization, manager, individual)</td></tr>
+      <tr><td>13</td><td>Reports builder</td><td>Report templates · Custom report builder · Scheduled and exported reports</td></tr>
+      <tr><td>14</td><td>Employee lifecycle management</td><td>Status directory (active/inactive/pending) · Deactivation flow · Rejoin flow</td></tr>
+      <tr><td>15</td><td>Admin console</td><td>User and role management · Proxy login launcher · Module enablement · Org structure configuration</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 6 -->
+<div class="section">
+  <h2><span class="n">6.</span>Screen Specification — Authentication and Access</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Login</td><td>All</td><td>Email/username field, password field, single sign-on option, "forgot password" link, company logo slot.</td><td>Error state for invalid credentials; locked-account state after repeated failures.</td></tr>
+      <tr><td>Forgot / reset password</td><td>All</td><td>Email entry, reset link confirmation, new-password form with strength rules.</td><td>Expired-link state; success confirmation.</td></tr>
+      <tr><td>Proxy login switcher</td><td>Admin, Super Admin</td><td>Employee search/select, "view as" confirmation dialog, persistent exit banner shown across every subsequent screen.</td><td>Banner must remain visible and fixed while in proxy mode; a single control returns to the admin's own session.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">7.</span>Screen Specification — Career Page and Candidate Registry</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Job listings</td><td>Candidate (public)</td><td>Filterable list by department, location, job type; search bar; company branding banner.</td><td>Empty state when no open roles match a filter.</td></tr>
+      <tr><td>Job detail</td><td>Candidate (public)</td><td>Role description, requirements, "apply" call to action.</td><td>&nbsp;</td></tr>
+      <tr><td>Candidate registration / login</td><td>Candidate (public)</td><td>Registration form (name, contact, resume upload), returning-candidate login, this is the candidate registry the client specifically asked for.</td><td>A registered candidate can apply to multiple roles without re-entering their details each time.</td></tr>
+      <tr><td>Application form</td><td>Candidate (public)</td><td>Resume upload or parsed auto-fill, role-specific screening questions, consent checkboxes.</td><td>Draft-save state for incomplete applications.</td></tr>
+      <tr><td>Application status tracker</td><td>Candidate (public)</td><td>Stage indicator (applied, screening, interview, offer, closed), read-only.</td><td>Populated directly from the internal pipeline in Section 8; the candidate never sees internal notes or scores.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 7 -->
+<div class="section">
+  <h2><span class="n">8.</span>Screen Specification — Recruitment and Interview Scheduling</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Requisition creation</td><td>Admin, Manager</td><td>Role details, headcount, approval routing, target close date.</td><td>Draft, pending approval, approved, closed states.</td></tr>
+      <tr><td>Candidate pipeline</td><td>Admin, Manager</td><td>Kanban board by stage; candidate card with resume, source, and score.</td><td>Drag-and-drop between stages; filter by requisition and by recruiter.</td></tr>
+      <tr><td>Interview scheduling</td><td>Admin, Manager</td><td>Panel selection, calendar availability check, Microsoft Teams meeting link generation, candidate notification.</td><td>Conflict warning if a panelist's calendar is unavailable; reschedule flow.</td></tr>
+      <tr><td>Interview feedback form</td><td>Manager (interviewer)</td><td>Structured scorecard per competency, overall recommendation, free-text notes.</td><td>Locked once submitted; visible to the hiring team, not to the candidate.</td></tr>
+      <tr><td>Offer generation</td><td>Admin</td><td>Offer template auto-filled from the candidate's requisition and interview record: role, compensation, start date, reporting manager.</td><td>This is the direct fix for the client's stated difficulty: fields are pulled from the existing candidate and requisition record, not typed in manually.</td></tr>
+      <tr><td>Offer approval</td><td>Admin, Super Admin</td><td>Approval routing before an offer is sent, compensation-band validation.</td><td>Pending, approved, sent, accepted, declined states.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">9.</span>Screen Specification — Requisition-to-Employee Conversion</h2>
+  <p>This module exists specifically because the client cannot do this step in Darwinbox today. An accepted offer should become an employee record directly, without HR re-typing details into a separate onboarding form or importing an Excel sheet.</p>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Conversion review</td><td>Admin</td><td>Side-by-side view of the accepted offer's data against the employee record it will create; a single confirmation action, not a re-entry form.</td><td>Any field HR needs to add that wasn't part of the offer, employee code, system access group, is added here, not re-typed from scratch.</td></tr>
+      <tr><td>Auto-provisioned employee record</td><td>Admin, Employee</td><td>The new employee profile (Section 10), pre-filled entirely from the offer and interview data.</td><td>Status defaults to "pending" (Section 15) until the employee's first login.</td></tr>
+      <tr><td>Onboarding checklist</td><td>Admin, Employee</td><td>Pre-joining document collection, asset assignment tasks, orientation schedule.</td><td>Progress indicator per task; visible to both HR and the new employee.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 8 -->
+<div class="section">
+  <h2><span class="n">10.</span>Screen Specification — Employee Profile and Org View</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>My profile</td><td>All (own record), Admin/Manager (team records)</td><td>Tabs for personal details, employment details, documents (Section 13), and a presence indicator.</td><td>Presence indicator reads directly from today's attendance status: in office, out, on leave, or not yet checked in.</td></tr>
+      <tr><td>Employee directory</td><td>Admin, Manager</td><td>Searchable, filterable list of employees by department, location, and lifecycle status (Section 15).</td><td>Bulk actions (export, deactivate) available to Admin only.</td></tr>
+      <tr><td>Org chart</td><td>All</td><td>Visual reporting hierarchy, expandable by team.</td><td>&nbsp;</td></tr>
+      <tr><td>Presence status</td><td>All</td><td>A live "who's in today" view for a team or department.</td><td>Sourced from the same attendance events as Section 11, not a separately maintained field.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">11.</span>Screen Specification — Attendance</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Punch in / out</td><td>Employee</td><td>One-tap check-in and check-out, timestamp confirmation, optional location capture.</td><td>A late check-in reminder fires automatically if the punch happens after the shift's configured start time.</td></tr>
+      <tr><td>Attendance calendar</td><td>Employee, Manager</td><td>Month view of punches, shift assignment, holidays and leave overlays.</td><td>A day is only marked "present" once the minimum six-hours-present rule is met; short days are flagged for regularization.</td></tr>
+      <tr><td>Regularization request</td><td>Employee</td><td>Select the date, state the correct in/out time, add a reason, attach evidence if relevant.</td><td>The request form is not available at all once five days have passed since the attendance date, this is a hard cutoff, not a soft warning.</td></tr>
+      <tr><td>Regularization approval</td><td>Manager</td><td>Queue of pending requests for direct reports, approve or reject with a comment.</td><td>&nbsp;</td></tr>
+      <tr><td>Attendance policy configuration</td><td>Admin, Super Admin</td><td>Shift timing, minimum-hours rule, regularization window, all definable at the organization level with overrides.</td><td>Overrides can be scoped to a specific manager's team or to an individual employee, layered on top of the organization default (Section 17).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 9 -->
+<div class="section">
+  <h2><span class="n">12.</span>Screen Specification — Leave</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Apply leave</td><td>Employee</td><td>Leave type selector, date range, balance shown inline, reason field.</td><td>Warning shown if the request would exceed available balance.</td></tr>
+      <tr><td>Leave balance</td><td>Employee</td><td>Balance by leave type, accrual history, upcoming approved leave.</td><td>&nbsp;</td></tr>
+      <tr><td>Leave approval</td><td>Manager</td><td>Queue of pending requests, team calendar overlay to spot overlapping absences.</td><td>&nbsp;</td></tr>
+      <tr><td>Leave policy configuration</td><td>Admin, Super Admin</td><td>Leave types, accrual rules, carry-forward rules, at the organization level with the same manager and individual override capability as attendance.</td><td>Uses the same policy engine and assignment model as Section 11 (Section 17).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">13.</span>Screen Specification — HR Help Desk</h2>
+  <p>Scoped entirely to HR queries, leave, attendance, documents, payroll questions, never IT support. Every screen here exists to fix the specific gap the client described: escalation should follow the category and escalation-matrix configuration automatically, including for tickets that arrive by email.</p>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Raise ticket</td><td>Employee, Manager</td><td>Category selector (leave, attendance, documents, payroll, other), description, attachment.</td><td>Category selection is what drives assignment and SLA, so it is a required field, not optional.</td></tr>
+      <tr><td>My tickets</td><td>Employee, Manager</td><td>Status list (open, in progress, escalated, resolved), reopen action.</td><td>&nbsp;</td></tr>
+      <tr><td>Ticket queue</td><td>Admin (category owner)</td><td>Assigned tickets with an SLA countdown per ticket, category filter.</td><td>A visible countdown makes an approaching breach obvious before the automatic escalation fires.</td></tr>
+      <tr><td>Category, SLA and escalation configuration</td><td>Admin, Super Admin</td><td>Category list, default owner per category, SLA duration per category, and the escalation chain (who it goes to next if the owner doesn't respond in time).</td><td>This is the escalation module the client referenced; escalation is configured once per category here and applied automatically everywhere else, including email-raised tickets.</td></tr>
+      <tr><td>Email intake configuration</td><td>Admin, Super Admin</td><td>The HR help desk inbox address, a required-category prompt or keyword-based category detection for incoming mail, and a preview of how an email will be classified before it's confirmed as a ticket.</td><td>This is the direct fix for the client's complaint that emailed requests get assigned to different people inconsistently: every email-raised ticket is required to resolve to a category before it is assigned, so it follows the same owner and SLA rules as a ticket raised through the portal.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 10 -->
+<div class="section">
+  <h2><span class="n">14.</span>Screen Specification — HR Documents</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Template library</td><td>Admin, Super Admin</td><td>List of document templates, bona fide letter, experience letter and similar, with a template editor for merge fields.</td><td>&nbsp;</td></tr>
+      <tr><td>Generate document</td><td>Admin</td><td>Select employee, select template, preview with merged fields, generate.</td><td>Three delivery options after generation: email to the employee, pin directly to their profile, or download locally.</td></tr>
+      <tr><td>Issued documents log</td><td>Admin, Employee (own documents)</td><td>History of every document generated for an employee, with issue date and delivery method.</td><td>Each entry links to the QR verification record below.</td></tr>
+      <tr><td>QR verification page</td><td>Public, unauthenticated</td><td>A scan of the QR code printed on the document opens a minimal page confirming the document type, issue date, and employee name, and stating whether it is valid or has been revoked.</td><td>Deliberately shows only enough to confirm authenticity, not the full document contents or any additional employee data.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">15.</span>Screen Specification — Performance (Planned, Phase 2)</h2>
+  <p>Not part of the proof of concept; the client is explicit that this is not currently used but will be needed later for quarterly reviews and KRA goals. Included here so the module tree and data model don't need to be redesigned when it is built.</p>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th></tr></thead>
+    <tbody>
+      <tr><td>Goals and KRA</td><td>Employee, Manager</td><td>Goal setting against key result areas, progress tracking.</td></tr>
+      <tr><td>Quarterly review cycle</td><td>Employee, Manager, Admin</td><td>Structured review form, manager rating, cycle timeline.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">16.</span>Screen Specification — Expenses (Planned, Phase 2)</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th></tr></thead>
+    <tbody>
+      <tr><td>Claim submission</td><td>Employee</td><td>Expense category, amount, receipt upload.</td></tr>
+      <tr><td>Claim approval</td><td>Manager, Admin</td><td>Approval queue, reimbursement batch status.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 11 -->
+<div class="section">
+  <h2><span class="n">17.</span>Screen Specification — Policies Engine</h2>
+  <p>Attendance policy (Section 11) and leave policy (Section 12) both read from this shared engine rather than each maintaining their own configuration screen, so a policy is defined once and assigned in layers.</p>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Policy library</td><td>Admin, Super Admin</td><td>List of defined policies by type (attendance, leave), each with its rule set.</td><td>&nbsp;</td></tr>
+      <tr><td>Assignment rules</td><td>Admin, Super Admin</td><td>A layered assignment view: organization-wide default, then any department or manager-level override, then any individual-level override.</td><td>The most specific layer that applies to an employee wins; the UI should make that precedence visible, not just the end result.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">18.</span>Screen Specification — Reports Builder</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Report templates</td><td>Admin, Manager</td><td>Pre-built reports: attendance summary, leave utilization, employee headcount and audit exports.</td><td>&nbsp;</td></tr>
+      <tr><td>Custom report builder</td><td>Admin, Super Admin</td><td>Field picker across employee, attendance, leave and document data, filter and grouping controls, save-as-template option.</td><td>Field list should cover whatever fields the client's current Darwinbox reports use, so nothing they report on today becomes unavailable.</td></tr>
+      <tr><td>Scheduled and exported reports</td><td>Admin</td><td>Export to spreadsheet, scheduled recurring delivery by email.</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 12 -->
+<div class="section">
+  <h2><span class="n">19.</span>Screen Specification — Employee Lifecycle Management</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>Status directory</td><td>Admin</td><td>Employee list filterable by status: active, inactive, pending.</td><td>Pending means imported through Section 9's conversion flow but not yet activated; inactive means separated.</td></tr>
+      <tr><td>Deactivation flow</td><td>Admin</td><td>Select employee, effective date, exit checklist, access revocation trigger.</td><td>Deactivation does not delete the record; history is retained for the rejoin flow below.</td></tr>
+      <tr><td>Rejoin flow</td><td>Admin</td><td>Search inactive employees by name or prior employee code, reactivate against the existing record rather than creating a new one.</td><td>Preserves prior tenure, documents and history under the same employee identity.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2><span class="n">20.</span>Screen Specification — Admin Console</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Roles</th><th>Key elements</th><th>States and notes</th></tr></thead>
+    <tbody>
+      <tr><td>User and role management</td><td>Super Admin</td><td>Assign the Admin, Manager or Employee role per user, bulk role changes.</td><td>&nbsp;</td></tr>
+      <tr><td>Proxy login launcher</td><td>Admin, Super Admin</td><td>Entry point into the proxy login switcher described in Section 6.</td><td>&nbsp;</td></tr>
+      <tr><td>Module enablement</td><td>Super Admin</td><td>Toggle Performance and Expenses on when Phase 2 begins, without a redeploy.</td><td>&nbsp;</td></tr>
+      <tr><td>Org structure configuration</td><td>Super Admin</td><td>Departments, locations, reporting lines that the org chart (Section 10) and policy assignment (Section 17) both read from.</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 13 -->
+<div class="section">
+  <h2><span class="n">21.</span>Key Cross-Module Workflows</h2>
+  <p>Three flows cross module boundaries and are worth wireframing as their own linked screen sequence in Figma, since they are the flows the client specifically said are broken today.</p>
+
+  <h3>Requisition to employee, without a manual re-entry step</h3>
+  <div class="diagram">
+<svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="d1" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto">
+      <path d="M0,0 L5,2.5 L0,5 Z" fill="#8C8A84"/>
+    </marker>
+  </defs>
+  <rect x="10" y="70" width="140" height="46" rx="6" fill="#E9F3EA" stroke="#3F8358" stroke-width="1"/>
+  <text x="80" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#2A6B41">Interview feedback</text>
+  <line x1="150" y1="93" x2="195" y2="93" stroke="#8C8A84" stroke-width="1" marker-end="url(#d1)"/>
+
+  <rect x="197" y="70" width="140" height="46" rx="6" fill="#E7F1FA" stroke="#2383E2" stroke-width="1"/>
+  <text x="267" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#1A5FB4">Offer generation</text>
+  <text x="267" y="60" text-anchor="middle" font-size="8" fill="#6B6963">auto-filled, no re-typing</text>
+  <line x1="337" y1="93" x2="382" y2="93" stroke="#8C8A84" stroke-width="1" marker-end="url(#d1)"/>
+
+  <rect x="384" y="70" width="140" height="46" rx="6" fill="#FBF3DB" stroke="#C98A2C" stroke-width="1"/>
+  <text x="454" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#8A6114">Offer accepted</text>
+  <line x1="524" y1="93" x2="569" y2="93" stroke="#8C8A84" stroke-width="1" marker-end="url(#d1)"/>
+
+  <rect x="571" y="70" width="150" height="46" rx="6" fill="#F0EBF8" stroke="#8B5FBF" stroke-width="1"/>
+  <text x="646" y="93" text-anchor="middle" font-size="10" font-weight="700" fill="#5B3A87">Conversion review</text>
+  <text x="646" y="130" text-anchor="middle" font-size="8" fill="#6B6963">confirm, don't retype</text>
+  <line x1="721" y1="93" x2="766" y2="93" stroke="#8C8A84" stroke-width="1" marker-end="url(#d1)"/>
+
+  <rect x="768" y="70" width="122" height="46" rx="6" fill="#E9F3EA" stroke="#3F8358" stroke-width="1"/>
+  <text x="829" y="93" text-anchor="middle" font-size="10" font-weight="700" fill="#2A6B41">Employee record</text>
+  <text x="829" y="60" text-anchor="middle" font-size="8" fill="#6B6963">status: pending</text>
+
+  <rect x="10" y="150" width="880" height="30" rx="5" fill="#FBEAE6" stroke="#C6432D" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="#A6341E">Removed: manual re-entry of candidate details or an Excel import step between offer and employee record</text>
+</svg>
+  </div>
+  <div class="cap">Figure 1. Every field in the employee record traces back to the interview and offer record; the only human action is a confirmation, not data entry.</div>
+
+  <h3>Help desk ticket, from raise to auto-escalation</h3>
+  <div class="diagram">
+<svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="d2" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto">
+      <path d="M0,0 L5,2.5 L0,5 Z" fill="#8C8A84"/>
+    </marker>
+  </defs>
+  <rect x="10" y="20" width="140" height="42" rx="6" fill="#E7F1FA" stroke="#2383E2" stroke-width="1"/>
+  <text x="80" y="45" text-anchor="middle" font-size="9.5" font-weight="700" fill="#1A5FB4">Raised via portal</text>
+  <rect x="10" y="90" width="140" height="42" rx="6" fill="#E7F1FA" stroke="#2383E2" stroke-width="1"/>
+  <text x="80" y="115" text-anchor="middle" font-size="9.5" font-weight="700" fill="#1A5FB4">Raised via email</text>
+  <text x="80" y="145" text-anchor="middle" font-size="8" fill="#6B6963">must resolve to a category first</text>
+
+  <line x1="150" y1="41" x2="195" y2="70" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+  <line x1="150" y1="111" x2="195" y2="80" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+
+  <rect x="197" y="55" width="160" height="46" rx="6" fill="#FBF3DB" stroke="#C98A2C" stroke-width="1"/>
+  <text x="277" y="80" text-anchor="middle" font-size="9.5" font-weight="700" fill="#8A6114">Category assigned</text>
+  <text x="277" y="93" text-anchor="middle" font-size="8" fill="#8A6114">same rule, both intake paths</text>
+  <line x1="357" y1="78" x2="402" y2="78" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+
+  <rect x="404" y="55" width="160" height="46" rx="6" fill="#E9F3EA" stroke="#3F8358" stroke-width="1"/>
+  <text x="484" y="80" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2A6B41">Owner assigned, SLA starts</text>
+  <line x1="564" y1="78" x2="609" y2="78" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+
+  <rect x="611" y="20" width="150" height="42" rx="6" fill="#37352F"/>
+  <text x="686" y="45" text-anchor="middle" font-size="9.5" font-weight="700" fill="#FFFFFF">Owner resolves in time</text>
+
+  <rect x="611" y="90" width="150" height="42" rx="6" fill="#FBEAE6" stroke="#C6432D" stroke-width="1"/>
+  <text x="686" y="112" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A6341E">SLA breached</text>
+  <line x1="686" y1="132" x2="686" y2="160" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+  <rect x="611" y="162" width="270" height="42" rx="6" fill="#F0EBF8" stroke="#8B5FBF" stroke-width="1"/>
+  <text x="746" y="184" text-anchor="middle" font-size="9.5" font-weight="700" fill="#5B3A87">Auto-escalated to next in escalation chain</text>
+
+  <line x1="611" y1="41" x2="564" y2="70" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+  <line x1="611" y1="111" x2="564" y2="90" stroke="#8C8A84" stroke-width="1" marker-end="url(#d2)"/>
+</svg>
+  </div>
+  <div class="cap">Figure 2. Email-raised and portal-raised tickets converge on the same category, ownership and SLA rules before they diverge into resolved or escalated.</div>
+
+  <h3>Employee lifecycle states</h3>
+  <div class="diagram">
+<svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+  <defs>
+    <marker id="d3" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto">
+      <path d="M0,0 L5,2.5 L0,5 Z" fill="#8C8A84"/>
+    </marker>
+  </defs>
+  <rect x="20" y="55" width="160" height="46" rx="6" fill="#FBF3DB" stroke="#C98A2C" stroke-width="1"/>
+  <text x="100" y="83" text-anchor="middle" font-size="10" font-weight="700" fill="#8A6114">Pending</text>
+  <text x="100" y="40" text-anchor="middle" font-size="8" fill="#6B6963">imported, not yet activated</text>
+  <line x1="180" y1="78" x2="240" y2="78" stroke="#8C8A84" stroke-width="1" marker-end="url(#d3)"/>
+  <text x="210" y="68" text-anchor="middle" font-size="7.5" fill="#6B6963">first login</text>
+
+  <rect x="242" y="55" width="160" height="46" rx="6" fill="#E9F3EA" stroke="#3F8358" stroke-width="1"/>
+  <text x="322" y="83" text-anchor="middle" font-size="10" font-weight="700" fill="#2A6B41">Active</text>
+  <line x1="402" y1="78" x2="462" y2="78" stroke="#8C8A84" stroke-width="1" marker-end="url(#d3)"/>
+  <text x="432" y="68" text-anchor="middle" font-size="7.5" fill="#6B6963">deactivation</text>
+
+  <rect x="464" y="55" width="160" height="46" rx="6" fill="#FBEAE6" stroke="#C6432D" stroke-width="1"/>
+  <text x="544" y="83" text-anchor="middle" font-size="10" font-weight="700" fill="#A6341E">Inactive</text>
+  <text x="544" y="40" text-anchor="middle" font-size="8" fill="#6B6963">left, history retained</text>
+
+  <path d="M 544 101 Q 544 140 322 140 Q 100 140 100 101" fill="none" stroke="#8C8A84" stroke-width="1" marker-end="url(#d3)"/>
+  <text x="322" y="153" text-anchor="middle" font-size="8" fill="#6B6963">rejoin: reactivates the same record, not a new one</text>
+</svg>
+  </div>
+  <div class="cap">Figure 3. The rejoin path always returns to the existing record's history, never creates a duplicate employee.</div>
+</div>
+
+<!-- PAGE 14 -->
+<div class="section">
+  <h2><span class="n">22.</span>Figma File Structure and Design System Guidance</h2>
+  <p>The module tree in Section 5 maps directly onto Figma pages, so the designer isn't inventing an information architecture from scratch, only wireframing what's already specified.</p>
+  <div class="cols2">
+    <div class="col">
+      <h3>Page organization</h3>
+      <p>One Figma page per module number in Section 5 (fifteen pages total), plus two structural pages at the top of the file: <strong>00 – Design System</strong> (color, type, spacing, and component tokens) and <strong>01 – Flows</strong> (the three cross-module diagrams from Section 21, wired as connected frames using Figma's own flow-arrow feature, not static images).</p>
+      <h3>Frame naming</h3>
+      <p>Each screen becomes one frame, named to match this document exactly, for example <code>06.3 Regularization request</code>, so a reviewer can trace any frame back to its specification line without guessing.</p>
+    </div>
+    <div class="col">
+      <h3>Component library</h3>
+      <p>Build shared components once and reuse them across every module rather than redrawing per screen: the approval-chain widget (used by leave, regularization, offers and expenses), the SLA countdown badge (help desk), the status pill (active/inactive/pending, ticket status, offer status), and the policy-layer indicator (organization/manager/individual override).</p>
+      <h3>States to design per screen</h3>
+      <p>At minimum: empty state, populated state, and the specific edge case called out in that screen's specification, the five-day regularization cutoff, the SLA-breach countdown turning red, the QR verification page's "revoked" state. These edge cases are the actual requirements; a wireframe that only shows the happy path hasn't captured what the client asked for.</p>
+    </div>
+  </div>
+  <div class="note"><strong>Responsive scope.</strong> Employee-facing screens (profile, attendance punch, leave apply, help desk, document requests) need a mobile frame alongside desktop, since punch-in and leave requests are mobile-first actions for most employees. Admin and configuration screens (policy engine, reports builder, escalation configuration) can be desktop-only for this phase.</div>
+</div>
+
+<div class="section">
+  <h2><span class="n">23.</span>Next Steps</h2>
+  <ul>
+    <li>Confirm the role and access model in Section 4 with the client before wireframing begins, since every screen's visibility depends on it.</li>
+    <li>Wireframe Sections 6 through 9 first, authentication through requisition-to-employee conversion, since that sequence fixes the client's most specific stated pain point.</li>
+    <li>Wireframe Section 13, the help desk, second, for the same reason: it is the other explicitly broken workflow.</li>
+    <li>Treat Sections 15 and 16, Performance and Expenses, as structural placeholders only in this pass, full screens once Phase 2 is scoped.</li>
+    <li>Review the completed wireframes against Section 3's requirements table line by line before moving into visual design, to confirm nothing the client described was dropped.</li>
+  </ul>
+  <div class="footer-strip">Product requirements and wireframe blueprint. Visual design, interaction detail and engineering build sequencing are handled separately.</div>
+</div>
+
+</body>
+</html>

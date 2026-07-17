@@ -1,0 +1,786 @@
+Global Systems
+│
+├── Authentication and access
+│   ├── Login
+│   │   ├── Permissions: All
+│   │   ├── Fields: Email/username, password
+│   │   ├── Actions: Single sign-on option, "forgot password" link
+│   │   └── States: Invalid-credential and locked-account states
+│   │
+│   ├── Reset password
+│   │   ├── Permissions: All
+│   │   ├── Fields: Email entry, new-password form
+│   │   ├── Actions: Reset link
+│   │   └── States: Expired-link and success states
+│   │
+│   └── Proxy login switcher
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: Employee search/select
+│       ├── Actions: Confirmation dialog, persistent exit banner
+│       └── States: Banner stays visible across every screen while active
+│
+└───────────────
+│
+▼
+Super Admin
+│
+└── Navigation Modules
+│
+├── Admin console
+│   ├── User and role management
+│   │   ├── Permissions: Super Admin
+│   │   └── Actions: Assign Admin, Payroll Admin, Recruiter, Manager or Employee role, bulk role changes
+│   │
+│   ├── Proxy login launcher
+│   │   ├── Permissions: Admin, Super Admin
+│   │   └── Navigation: Entry point into the proxy login switcher
+│   │
+│   ├── Module enablement
+│   │   ├── Permissions: Super Admin
+│   │   ├── Actions: Toggle any module on for a tenant without a redeploy
+│   │   └── Notes: How Performance, Benefits, and every "added for completeness" module gets turned on when the client is ready
+│   │
+│   └── Org structure configuration
+│       ├── Permissions: Super Admin
+│       ├── Fields: Departments, locations, reporting lines
+│       └── Notes: Feeding the org chart and policy assignment
+│
+├── Policies engine
+│   ├── Policy library
+│   │   ├── Permissions: Admin, Super Admin
+│   │   └── Fields: Defined policies by type (attendance, leave, travel, expense), each with its rule set
+│   │
+│   └── Assignment rules
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: Layered assignment: organization default, then department or manager override, then individual override
+│       └── States: The most specific layer wins; the UI should show that precedence, not just the result
+│
+├── HR help desk
+│   ├── Category, SLA and escalation configuration
+│   │   ├── Permissions: Admin, Super Admin
+│   │   ├── Fields: Category list, default owner, SLA duration, escalation chain per category
+│   │   └── Notes: Applied automatically to every intake channel, including email
+│   │
+│   └── Email intake configuration
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: HR help desk inbox address, required-category prompt or keyword classification, classification preview
+│       └── Notes: Fixes the client's complaint directly: every email-raised ticket resolves to a category before assignment
+│
+├── Attendance and shift scheduling
+│   └── Attendance policy configuration
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: Shift timing, minimum-hours rule, regularization window, at the organization level with overrides
+│       └── Notes: Overrides scoped by manager's team or individual employee
+│
+├── Leave
+│   └── Leave policy configuration
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: Leave types, accrual and carry-forward rules, same override model as attendance
+│       └── Notes: Shared policy engine
+│
+├── Recruitment and interview scheduling
+│   └── Offer approval
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: Approval routing, compensation-band validation
+│       └── States: Pending, approved, sent, accepted, declined states
+│
+├── HR documents and e-signature
+│   └── Template library
+│       ├── Permissions: Admin, Super Admin
+│       └── Fields: Bona fide, experience letter and similar templates, with a merge-field editor
+│
+├── Payroll and compensation
+│   ├── Salary structure setup
+│   │   ├── Permissions: Payroll Admin, Super Admin
+│   │   └── Fields: Pay components, grade-wise structures, statutory components
+│   │
+│   └── Compensation and increment planning
+│       ├── Permissions: Payroll Admin, Manager, Super Admin
+│       ├── Fields: Budget allocation by department, increment modeling against performance ratings
+│       └── States: Draft, approved, applied states
+│
+├── Rewards and recognition
+│   └── Program and budget configuration
+│       ├── Permissions: Admin, Super Admin
+│       └── Fields: Define programs, eligibility, and budget caps per department
+│
+├── Reports and people analytics
+│   ├── Custom report builder
+│   │   ├── Permissions: Admin, Super Admin
+│   │   ├── Fields: Field picker across every module's data
+│   │   ├── Filters: Filter and grouping controls
+│   │   ├── Actions: Save-as-template
+│   │   └── Notes: Field list matches whatever the client currently reports on in Darwinbox
+│   │
+│   └── Role-based analytics dashboards
+│       ├── Permissions: Admin, Manager, Super Admin
+│       ├── Fields: Recruitment funnel, attrition trend, engagement score, each scoped to what that role should see
+│       └── Notes: Darwinbox's drill-down structure; a manager sees their team's slice, not the organization's
+│
+├── Workforce and position planning
+│   ├── Position management
+│   │   ├── Permissions: Admin, Super Admin
+│   │   └── Fields: Defined positions independent of the person currently in them, linked to the org chart
+│   │
+│   ├── Headcount budget vs. actual
+│   │   ├── Permissions: Admin, Super Admin
+│   │   └── Fields: Approved headcount by department against current filled and open positions
+│   │
+│   └── Org design sandbox
+│       ├── Permissions: Super Admin
+│       └── Actions: Draft reporting-line changes before publishing them to the live org chart
+│
+└── Performance and talent management
+└── Succession candidate view
+├── Permissions: Admin, Super Admin
+└── Fields: Readiness indicators for key positions, linked to position data
+│
+└───────────────
+│
+▼
+HR Admin
+│
+└── Navigation Modules
+│
+├── Requisition-to-employee conversion
+│   ├── Conversion review
+│   │   ├── Permissions: Admin
+│   │   ├── Fields: Side-by-side offer data against the record it will create
+│   │   ├── Actions: Single confirmation action
+│   │   └── States: Only fields not already captured are added here
+│   │
+│   ├── Auto-provisioned employee record
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: New profile pre-filled from offer and interview data
+│   │   └── States: Status defaults to "pending"
+│   │
+│   └── Onboarding handoff
+│       ├── Permissions: Admin, Employee
+│       └── Navigation: Direct link into the onboarding checklist
+│
+├── Onboarding
+│   ├── Pre-joining checklist
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: Task list assigned to the new hire before their start date
+│   │   └── States: Progress indicator visible to both HR and the employee
+│   │
+│   ├── Document collection with AI validation
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: Upload identity and education documents
+│   │   ├── Validation: Automated format and authenticity checks flag issues before HR review
+│   │   └── States: Flagged, verified, and rejected states
+│   │
+│   ├── Asset and access provisioning
+│   │   ├── Permissions: Admin
+│   │   └── Fields: Checklist of laptop, ID card and system access tasks tied to the new employee record
+│   │
+│   └── Induction schedule
+│       ├── Permissions: Admin, Employee
+│       └── Fields: Orientation calendar, policy acknowledgment sign-off
+│
+├── Confirmation workflow
+│   ├── Probation tracker
+│   │   ├── Permissions: Admin, Manager
+│   │   └── Fields: List of employees approaching their confirmation date
+│   │
+│   ├── Confirmation review
+│   │   ├── Permissions: Manager, Admin
+│   │   ├── Fields: Manager recommendation, HR sign-off
+│   │   ├── Actions: Extension option
+│   │   └── States: Confirmed, extended, or exited states
+│   │
+│   └── Confirmation letter trigger
+│       ├── Permissions: Admin
+│       └── Actions: Generates the confirmation letter directly through the document module
+│
+├── Employee profile and org view
+│   ├── My profile (team records)
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Personal, employment and document tabs
+│   │   ├── States: Presence indicator
+│   │   └── Notes: Presence reads directly from today's attendance status
+│   │
+│   ├── Employee directory
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Searchable list
+│   │   ├── Filters: Filterable by department, location and lifecycle status
+│   │   └── Actions: Bulk actions restricted to Admin
+│   │
+│   └── Org chart
+│       ├── Permissions: All
+│       └── Fields: Visual reporting hierarchy, expandable by team
+│
+├── HR help desk
+│   ├── Ticket queue
+│   │   ├── Permissions: Admin (category owner)
+│   │   └── Fields: Assigned tickets with a visible SLA countdown
+│   │
+│   ├── Category, SLA and escalation configuration
+│   │   ├── Permissions: Admin, Super Admin
+│   │   ├── Fields: Category list, default owner, SLA duration, escalation chain per category
+│   │   └── Notes: Applied automatically to every intake channel, including email
+│   │
+│   └── Email intake configuration
+│       ├── Permissions: Admin, Super Admin
+│       ├── Fields: HR help desk inbox address, required-category prompt or keyword classification, classification preview
+│       └── Notes: Fixes the client's complaint directly: every email-raised ticket resolves to a category before assignment
+│
+├── HR documents and e-signature
+│   ├── Template library
+│   │   ├── Permissions: Admin, Super Admin
+│   │   └── Fields: Bona fide, experience letter and similar templates, with a merge-field editor
+│   │
+│   ├── Generate document
+│   │   ├── Permissions: Admin
+│   │   ├── Fields: Select employee and template, preview merged fields
+│   │   ├── Actions: Generate
+│   │   └── States: Delivery options: email, pin to profile, or download locally
+│   │
+│   ├── Issued documents log
+│   │   ├── Permissions: Admin, Employee (own)
+│   │   ├── Fields: History of every document issued, with issue date and delivery method
+│   │   └── Notes: Links to the QR verification record
+│   │
+│   └── E-signature request and status
+│       ├── Permissions: Admin, Employee
+│       ├── Actions: Send a document for digital signature
+│       ├── States: Track signed/pending status
+│       └── Notes: Used for offer letters, policy acknowledgments and contracts
+│
+├── Employee benefits
+│   └── Claims against benefits
+│       ├── Permissions: Employee, Admin
+│       └── Actions: Submit a claim, track approval status
+│
+├── Engagement, surveys and social
+│   ├── Survey results dashboard
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Aggregated, anonymized results by team
+│   │   └── States: Suppressed below a minimum response count to preserve anonymity
+│   │
+│   └── Org announcements / noticeboard
+│       ├── Permissions: All (post: Admin)
+│       └── Fields: Company-wide announcements feed
+│
+├── Reports and people analytics
+│   ├── Report templates
+│   │   ├── Permissions: Admin, Manager
+│   │   └── Fields: Attendance summary, leave utilization, headcount, audit exports
+│   │
+│   ├── Custom report builder
+│   │   ├── Permissions: Admin, Super Admin
+│   │   ├── Fields: Field picker across every module's data
+│   │   ├── Filters: Filter and grouping controls
+│   │   └── Actions: Save-as-template
+│   │
+│   ├── Scheduled and exported reports
+│   │   ├── Permissions: Admin
+│   │   └── Actions: Export to spreadsheet, scheduled recurring delivery
+│   │
+│   └── Role-based analytics dashboards
+│       ├── Permissions: Admin, Manager, Super Admin
+│       ├── Fields: Recruitment funnel, attrition trend, engagement score, each scoped to what that role should see
+│       └── Notes: Darwinbox's drill-down structure; a manager sees their team's slice, not the organization's
+│
+├── Travel and expense
+│   └── Expense approval
+│       ├── Permissions: Manager, Admin
+│       └── Fields: Approval queue, policy-limit flagging
+│
+├── Employee lifecycle and separation
+│   ├── Status directory
+│   │   ├── Permissions: Admin
+│   │   ├── Fields: Employee list
+│   │   ├── Filters: Filterable by status: active, inactive, pending
+│   │   └── States: Pending means imported but not yet activated
+│   │
+│   ├── Resignation and notice tracker
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Resignation date, notice period, last working day
+│   │   └── Notes: Feeds directly into full and final settlement
+│   │
+│   ├── Exit clearance checklist
+│   │   ├── Permissions: Admin, Manager
+│   │   └── Fields: Asset return, access revocation, department sign-offs
+│   │
+│   ├── Exit interview
+│   │   ├── Permissions: Admin, departing Employee
+│   │   └── Fields: Structured exit feedback form
+│   │
+│   ├── Deactivation
+│   │   ├── Permissions: Admin
+│   │   ├── Fields: Effective date, access revocation trigger
+│   │   └── States: Does not delete the record; history retained for rejoin
+│   │
+│   └── Rejoin flow
+│       ├── Permissions: Admin
+│       ├── Fields: Search inactive employees
+│       ├── Actions: Reactivate against the existing record
+│       └── Notes: Preserves prior tenure, documents and history under the same identity
+│
+├── Attendance and shift scheduling
+│   └── Shift roster
+│       ├── Permissions: Admin, Manager
+│       └── Fields: Assign employees to shifts by week, view coverage gaps
+│
+├── Performance and talent management
+│   ├── Quarterly review cycle
+│   │   ├── Permissions: Employee, Manager, Admin
+│   │   └── Fields: Structured review form, manager rating, cycle timeline
+│   │
+│   └── Competency and skill matrix
+│       ├── Permissions: Admin, Manager
+│       └── Fields: Skill framework per role, gap identification
+│
+└── Admin console
+└── Proxy login launcher
+├── Permissions: Admin, Super Admin
+└── Navigation: Entry point into the proxy login switcher
+│
+└───────────────
+│
+▼
+Payroll Admin
+│
+└── Navigation Modules
+│
+├── Payroll and compensation
+│   ├── Salary structure setup
+│   │   ├── Permissions: Payroll Admin, Super Admin
+│   │   └── Fields: Pay components, grade-wise structures, statutory components
+│   │
+│   ├── Monthly pay run
+│   │   ├── Permissions: Payroll Admin
+│   │   ├── Fields: Attendance and leave data pulled in automatically, LOP calculation, run preview before lock
+│   │   └── States: Draft, locked, disbursed states
+│   │
+│   ├── IT declarations
+│   │   ├── Permissions: Employee, Payroll Admin
+│   │   ├── Fields: Tax-saving investment declarations, proof upload
+│   │   └── States: Submitted, verified states
+│   │
+│   ├── Compensation and increment planning
+│   │   ├── Permissions: Payroll Admin, Manager, Super Admin
+│   │   ├── Fields: Budget allocation by department, increment modeling against performance ratings
+│   │   └── States: Draft, approved, applied states
+│   │
+│   └── Full and final settlement
+│       ├── Permissions: Payroll Admin
+│       └── Fields: Final dues calculation linked to the exit clearance checklist
+│
+└── Travel and expense
+└── Reimbursement batch
+├── Permissions: Payroll Admin
+└── Fields: Approved claims grouped for payout, linked to payroll
+│
+└───────────────
+│
+▼
+Recruiter
+│
+└── Navigation Modules
+│
+├── Recruitment and interview scheduling
+│   ├── Requisition creation
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Role details, headcount, approval routing
+│   │   └── States: Draft, pending, approved, closed states
+│   │
+│   ├── Candidate pipeline
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Kanban by stage, candidate card with resume and score
+│   │   └── Filters: Filter by requisition and recruiter
+│   │
+│   ├── Interview scheduling
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Panel selection, Microsoft Teams link generation, candidate notification
+│   │   └── States: Conflict warning; reschedule flow
+│   │
+│   └── Offer generation
+│       ├── Permissions: Recruiter
+│       ├── Fields: Template auto-filled from the candidate and requisition record
+│       └── Notes: The client's specific fix: no manual re-typing
+│
+└── Career page and candidate registry
+└── Job listings
+├── Permissions: Recruiter (manage)
+└── Actions: Publish and edit open roles shown on the public career page
+│
+└───────────────
+│
+▼
+Manager
+│
+└── Navigation Modules
+│
+├── Recruitment and interview scheduling
+│   ├── Requisition creation
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Role details, headcount, approval routing
+│   │   └── States: Draft, pending, approved, closed states
+│   │
+│   ├── Candidate pipeline
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Kanban by stage, candidate card with resume and score
+│   │   └── Filters: Filter by requisition and recruiter
+│   │
+│   ├── Interview scheduling
+│   │   ├── Permissions: Recruiter, Manager
+│   │   ├── Fields: Panel selection, Microsoft Teams link generation, candidate notification
+│   │   └── States: Conflict warning; reschedule flow
+│   │
+│   └── Interview feedback form
+│       ├── Permissions: Manager (interviewer)
+│       ├── Fields: Scorecard per competency, recommendation, notes
+│       └── States: Locked once submitted
+│
+├── Confirmation workflow
+│   ├── Probation tracker
+│   │   ├── Permissions: Admin, Manager
+│   │   └── Fields: List of employees approaching their confirmation date
+│   │
+│   └── Confirmation review
+│       ├── Permissions: Manager, Admin
+│       ├── Fields: Manager recommendation, HR sign-off
+│       ├── Actions: Extension option
+│       └── States: Confirmed, extended, or exited states
+│
+├── Employee profile and org view
+│   ├── My profile (team records)
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Personal, employment and document tabs
+│   │   ├── States: Presence indicator
+│   │   └── Notes: Presence reads directly from today's attendance status
+│   │
+│   ├── Employee directory
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Searchable list
+│   │   └── Filters: Filterable by department, location and lifecycle status
+│   │
+│   └── Presence status
+│       ├── Permissions: All
+│       ├── Fields: Live "who's in today" view for a team
+│       └── Notes: Sourced from the same attendance events
+│
+├── Attendance and shift scheduling
+│   ├── Attendance calendar
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Month view of punches, shift assignment, holidays and leave overlays
+│   │   └── States: A day counts "present" only once the six-hour minimum is met
+│   │
+│   ├── Regularization approval
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Correct in/out time with a reason
+│   │   ├── Actions: Manager approval queue
+│   │   └── States: Request form unavailable entirely past the five-day cutoff
+│   │
+│   └── Shift roster
+│       ├── Permissions: Admin, Manager
+│       └── Fields: Assign employees to shifts by week, view coverage gaps
+│
+├── Leave
+│   └── Leave approval
+│       ├── Permissions: Manager
+│       └── Fields: Pending queue, team calendar overlay
+│
+├── Payroll and compensation
+│   └── Compensation and increment planning
+│       ├── Permissions: Payroll Admin, Manager, Super Admin
+│       ├── Fields: Budget allocation by department, increment modeling against performance ratings
+│       └── States: Draft, approved, applied states
+│
+├── Travel and expense
+│   ├── Travel approval
+│   │   ├── Permissions: Manager
+│   │   └── Actions: Approve or reject against travel policy limits
+│   │
+│   └── Expense approval
+│       ├── Permissions: Manager, Admin
+│       └── Fields: Approval queue, policy-limit flagging
+│
+├── Rewards and recognition
+│   ├── Give recognition
+│   │   ├── Permissions: Employee, Manager
+│   │   └── Actions: Nominate a colleague, select a program, add a citation
+│   │
+│   └── Recognition feed / leaderboard
+│       ├── Permissions: All
+│       └── Fields: Organization-wide feed of recognitions given, ranked leaderboard
+│
+├── Engagement, surveys and social
+│   ├── Survey results dashboard
+│   │   ├── Permissions: Admin, Manager
+│   │   ├── Fields: Aggregated, anonymized results by team
+│   │   └── States: Suppressed below a minimum response count to preserve anonymity
+│   │
+│   └── Discussion groups
+│       ├── Permissions: All
+│       └── Fields: Topic or department-based groups for informal discussion
+│
+├── HR help desk
+│   ├── Raise ticket
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Category selector (leave, attendance, documents, payroll, other), description, attachment
+│   │   └── States: Category is required, since it drives assignment and SLA
+│   │
+│   └── My tickets
+│       ├── Permissions: Employee, Manager
+│       ├── Fields: Status list
+│       └── Actions: Reopen action
+│
+├── Performance and talent management
+│   ├── Goals and KRA
+│   │   ├── Permissions: Employee, Manager
+│   │   └── Fields: Goal setting against key result areas, progress tracking
+│   │
+│   ├── Quarterly review cycle
+│   │   ├── Permissions: Employee, Manager, Admin
+│   │   └── Fields: Structured review form, manager rating, cycle timeline
+│   │
+│   ├── 360-degree feedback
+│   │   ├── Permissions: Employee, Manager
+│   │   └── Fields: Multi-rater feedback collection tied to the review cycle
+│   │
+│   └── Competency and skill matrix
+│       ├── Permissions: Admin, Manager
+│       └── Fields: Skill framework per role, gap identification
+│
+├── Reports and people analytics
+│   ├── Report templates
+│   │   ├── Permissions: Admin, Manager
+│   │   └── Fields: Attendance summary, leave utilization, headcount, audit exports
+│   │
+│   └── Role-based analytics dashboards
+│       ├── Permissions: Admin, Manager, Super Admin
+│       ├── Fields: Recruitment funnel, attrition trend, engagement score, each scoped to what that role should see
+│       └── Notes: Darwinbox's drill-down structure; a manager sees their team's slice, not the organization's
+│
+└── Employee lifecycle and separation
+├── Resignation and notice tracker
+│   ├── Permissions: Admin, Manager
+│   ├── Fields: Resignation date, notice period, last working day
+│   └── Notes: Feeds directly into full and final settlement
+│
+└── Exit clearance checklist
+├── Permissions: Admin, Manager
+└── Fields: Asset return, access revocation, department sign-offs
+│
+└───────────────
+│
+▼
+Employee
+│
+└── Navigation Modules
+│
+├── Requisition-to-employee conversion
+│   ├── Auto-provisioned employee record
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: New profile pre-filled from offer and interview data
+│   │   └── States: Status defaults to "pending"
+│   │
+│   └── Onboarding handoff
+│       ├── Permissions: Admin, Employee
+│       └── Navigation: Direct link into the onboarding checklist
+│
+├── Onboarding
+│   ├── Pre-joining checklist
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: Task list assigned to the new hire before their start date
+│   │   └── States: Progress indicator visible to both HR and the employee
+│   │
+│   ├── Document collection with AI validation
+│   │   ├── Permissions: Admin, Employee
+│   │   ├── Fields: Upload identity and education documents
+│   │   ├── Validation: Automated format and authenticity checks flag issues before HR review
+│   │   └── States: Flagged, verified, and rejected states
+│   │
+│   └── Induction schedule
+│       ├── Permissions: Admin, Employee
+│       └── Fields: Orientation calendar, policy acknowledgment sign-off
+│
+├── Employee profile and org view
+│   ├── My profile
+│   │   ├── Permissions: All (own record)
+│   │   ├── Fields: Personal, employment and document tabs
+│   │   ├── States: Presence indicator
+│   │   └── Notes: Presence reads directly from today's attendance status
+│   │
+│   ├── Org chart
+│   │   ├── Permissions: All
+│   │   └── Fields: Visual reporting hierarchy, expandable by team
+│   │
+│   └── Presence status
+│       ├── Permissions: All
+│       ├── Fields: Live "who's in today" view for a team
+│       └── Notes: Sourced from the same attendance events
+│
+├── Attendance and shift scheduling
+│   ├── Punch in/out
+│   │   ├── Permissions: Employee
+│   │   ├── Fields: One-tap check-in/out, timestamp, optional location capture
+│   │   └── States: Late check-in reminder fires automatically past shift start
+│   │
+│   ├── Attendance calendar
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Month view of punches, shift assignment, holidays and leave overlays
+│   │   └── States: A day counts "present" only once the six-hour minimum is met
+│   │
+│   ├── Regularization request
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Correct in/out time with a reason
+│   │   └── States: Request form unavailable entirely past the five-day cutoff
+│   │
+│   └── Shift swap request
+│       ├── Permissions: Employee
+│       └── Actions: Request a swap with a named colleague, manager approval
+│
+├── Leave
+│   ├── Apply leave
+│   │   ├── Permissions: Employee
+│   │   ├── Fields: Leave type, date range, inline balance, reason
+│   │   └── States: Warning if the request exceeds available balance
+│   │
+│   └── Leave balance
+│       ├── Permissions: Employee
+│       └── Fields: Balance by type, accrual history, upcoming approved leave
+│
+├── HR help desk
+│   ├── Raise ticket
+│   │   ├── Permissions: Employee, Manager
+│   │   ├── Fields: Category selector (leave, attendance, documents, payroll, other), description, attachment
+│   │   └── States: Category is required, since it drives assignment and SLA
+│   │
+│   └── My tickets
+│       ├── Permissions: Employee, Manager
+│       ├── Fields: Status list
+│       └── Actions: Reopen action
+│
+├── HR documents and e-signature
+│   ├── Issued documents log
+│   │   ├── Permissions: Admin, Employee (own)
+│   │   ├── Fields: History of every document issued, with issue date and delivery method
+│   │   └── Notes: Links to the QR verification record
+│   │
+│   └── E-signature request and status
+│       ├── Permissions: Admin, Employee
+│       └── States: Track signed/pending status
+│
+├── Employee benefits
+│   ├── Benefits catalog
+│   │   ├── Permissions: Employee
+│   │   └── Fields: Available plans (insurance, wellness, others) by eligibility
+│   │
+│   ├── Enrollment
+│   │   ├── Permissions: Employee
+│   │   ├── Fields: Plan selection during the enrollment window
+│   │   └── States: Open, closed, locked-until-next-cycle states
+│   │
+│   ├── Dependent management
+│   │   ├── Permissions: Employee
+│   │   └── Actions: Add or update dependents covered under a plan
+│   │
+│   └── Claims against benefits
+│       ├── Permissions: Employee, Admin
+│       └── Actions: Submit a claim, track approval status
+│
+├── Travel and expense
+│   ├── Travel request
+│   │   ├── Permissions: Employee
+│   │   └── Fields: Destination, dates, purpose, estimated cost
+│   │
+│   └── Expense claim submission
+│       ├── Permissions: Employee
+│       └── Fields: Category, amount, receipt capture with OCR auto-fill
+│
+├── Rewards and recognition
+│   ├── Give recognition
+│   │   ├── Permissions: Employee, Manager
+│   │   └── Actions: Nominate a colleague, select a program, add a citation
+│   │
+│   ├── Recognition feed / leaderboard
+│   │   ├── Permissions: All
+│   │   └── Fields: Organization-wide feed of recognitions given, ranked leaderboard
+│   │
+│   └── Redemption marketplace
+│       ├── Permissions: Employee
+│       └── Fields: Points balance, catalog of redeemable rewards
+│
+├── Engagement, surveys and social
+│   ├── Pulse survey
+│   │   ├── Permissions: Employee
+│   │   ├── Fields: Short, recurring survey prompts
+│   │   └── States: Anonymous by default
+│   │
+│   ├── Org announcements / noticeboard
+│   │   ├── Permissions: All (post: Admin)
+│   │   └── Fields: Company-wide announcements feed
+│   │
+│   └── Discussion groups
+│       ├── Permissions: All
+│       └── Fields: Topic or department-based groups for informal discussion
+│
+├── Performance and talent management
+│   ├── Goals and KRA
+│   │   ├── Permissions: Employee, Manager
+│   │   └── Fields: Goal setting against key result areas, progress tracking
+│   │
+│   ├── Quarterly review cycle
+│   │   ├── Permissions: Employee, Manager, Admin
+│   │   └── Fields: Structured review form, manager rating, cycle timeline
+│   │
+│   └── 360-degree feedback
+│       ├── Permissions: Employee, Manager
+│       └── Fields: Multi-rater feedback collection tied to the review cycle
+│
+├── Payroll and compensation
+│   ├── Payslip view
+│   │   ├── Permissions: Employee
+│   │   └── Fields: Monthly payslip, download, historical archive
+│   │
+│   └── IT declarations
+│       ├── Permissions: Employee, Payroll Admin
+│       ├── Fields: Tax-saving investment declarations, proof upload
+│       └── States: Submitted, verified states
+│
+└── Employee lifecycle and separation
+└── Exit interview
+├── Permissions: Admin, departing Employee
+└── Fields: Structured exit feedback form
+│
+└───────────────
+│
+▼
+Candidate
+│
+└── Navigation Modules
+│
+├── Career page and candidate registry
+│   ├── Job listings
+│   │   ├── Permissions: Candidate (public)
+│   │   ├── Fields: Filterable list, search, branding banner
+│   │   └── States: Empty state when no roles match
+│   │
+│   ├── Job detail
+│   │   ├── Permissions: Candidate (public)
+│   │   └── Fields: Description, requirements, apply action
+│   │
+│   ├── Candidate registration/login
+│   │   ├── Permissions: Candidate (public)
+│   │   ├── Fields: Registration form, resume upload, returning-candidate login
+│   │   └── Notes: One registry record supports multiple applications
+│   │
+│   ├── Application form
+│   │   ├── Permissions: Candidate (public)
+│   │   ├── Fields: Resume parsing/auto-fill, screening questions, consent
+│   │   └── States: Draft-save state
+│   │
+│   └── Status tracker
+│       ├── Permissions: Candidate (public)
+│       ├── Fields: Stage indicator, read-only
+│       └── Notes: Reflects the internal pipeline without exposing internal notes
+│
+└── HR documents and e-signature
+└── QR verification page
+├── Permissions: Public, unauthenticated
+├── Actions: Scanning the document's QR code confirms document type, issue date, employee name, and validity
+└── States: Shows only enough to confirm authenticity, not full contents  ========================================
